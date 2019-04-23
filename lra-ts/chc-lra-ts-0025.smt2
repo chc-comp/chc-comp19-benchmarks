@@ -1,0 +1,16 @@
+;; Original file: ts_224.smt2
+(set-logic HORN)
+(declare-fun inv (Real Real Real) Bool)
+(declare-fun fail () Bool)
+(assert (forall ((x Real) (y Real) (i Real))
+  (=> (and (= x 0) (= y 0) (= i 0)) (inv x y i))))
+(assert (forall ((i Real) (x Real) (y Real) (x1 Real) (y1 Real) (i1 Real))
+  (=> (and (inv x y i) (= i1 (+ i 1)) (= x1 (+ x i1)) (= y1 (- y i1)))
+      (inv x1 y1 i1))))
+(assert (forall ((i Real) (x Real) (y Real))
+  (let ((a!1 (- x (+ y (- (- 8 i) 7)))))
+  (let ((a!2 (and (inv x y i) (= 0 a!1) (not (= x (- y))))))
+    (=> a!2 false)))))
+
+(check-sat)
+(exit)

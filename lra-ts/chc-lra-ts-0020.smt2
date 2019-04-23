@@ -1,0 +1,15 @@
+;; Original file: ts_193.smt2
+(set-logic HORN)
+(declare-fun inv (Real Real) Bool)
+(declare-fun fail () Bool)
+(assert (forall ((x Real) (y Real)) (=> (and (= x 0) (= y 50)) (inv x y))))
+(assert (forall ((x Real) (y Real) (x2 Real) (y2 Real))
+  (let ((a!1 (and (inv x y)
+                  (< x 100)
+                  (= x2 (+ x 1))
+                  (ite (> x2 50) (= y2 (+ y 1)) (= y2 y)))))
+    (=> a!1 (inv x2 y2)))))
+(assert (forall ((x Real) (y Real)) (=> (and (inv x y) (= x 100) (not (= y 100))) false)))
+
+(check-sat)
+(exit)

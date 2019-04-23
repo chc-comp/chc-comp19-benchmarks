@@ -1,0 +1,18 @@
+;; Original file: ts_160.smt2
+(set-logic HORN)
+(declare-fun inv (Real Real Real Real) Bool)
+(declare-fun fail () Bool)
+(assert (forall ((i Real) (k Real) (n Real) (j Real))
+  (=> (and (= i 0) (= j 0) (= n 0) (>= k 0)) (inv i k n j))))
+(assert (forall ((n Real) (i Real) (j Real) (i1 Real) (k Real) (n1 Real) (j1 Real))
+  (let ((a!1 (and (inv i k n j)
+                  (< i (* 2 k))
+                  (= n1 (ite (= j 0) (+ n 1) n))
+                  (= i1 (+ i 1))
+                  (= j1 (ite (= j 0) 1 0)))))
+    (=> a!1 (inv i1 k n1 j1)))))
+(assert (forall ((j Real) (i Real) (n Real) (k Real))
+  (=> (and (inv i k n j) (>= i (* 2 k)) (not (= n k))) false)))
+
+(check-sat)
+(exit)
